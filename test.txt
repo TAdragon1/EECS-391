@@ -1,0 +1,7 @@
+setState <state>
+randomizeState <n>
+printState
+move <direction>
+solve A-star <heuristic>
+solve beam <k>
+maxNodes <n>
