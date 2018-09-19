@@ -2,7 +2,7 @@ import re
 import random
 # variables
 goal_state = list("b12345678")  # goal state
-state = list("b12345678")  # start at the goal state before randomizing the state
+state = ""  # set to empty
 max_nodes = 0
 
 # methods
