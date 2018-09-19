@@ -1,4 +1,5 @@
 import re
+import random
 # variables
 goal_state = list("b12345678")  # goal state
 state = list("b12345678")  # start at the goal state before randomizing the state
@@ -14,7 +15,16 @@ def setState(str):
 def randomizeState(n):
  "This randomizes the state a certain number n of moves away from the goal state"
  global state
-
+ for i in range(1, int(n)):
+  nextMove = random.randint(1, 4)
+  if nextMove == 1:
+   move("up")
+  elif nextMove == 2:
+   move("down")
+  elif nextMove == 3:
+   move("left")
+  else:  # nextMove == 4
+   move("right")
  return
 
 def printState():
@@ -50,23 +60,24 @@ def move(dir):
   else:  # b cannot be moved down
    print("Cannot move down")
  elif dir == "left":
-  if b != 0 or b != 3 or b != 6:  # b can be moved to the left
+  if b != 0 and b != 3 and b != 6:  # b can be moved to the left
    temp = state[b - 1]
    state[b - 1] = state[b]
    state[b] = temp
   else:  # b cannot be moved to the left
    print("Cannot move left")
  elif dir == "right":
-  if b != 2 or b != 5 or b != 8:  # b can be moved to the right
+  if b != 2 and b != 5 and b != 8:  # b can be moved to the right
    temp = state[b + 1]
    state[b + 1] = state[b]
    state[b] = temp
   else:  # b cannot be moved to the right
-   print("Cannot move left")
+   print("Cannot move right")
  return
 
 def maxNodes(n):
  "This sets the number of maximum nodes during a search"
+ global max_nodes
  max_nodes=n
  return
 

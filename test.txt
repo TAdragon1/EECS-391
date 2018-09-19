@@ -1,7 +1,12 @@
-setState <state>
-randomizeState <n>
+setState b12345678
+randomizeState 5
 printState
-move <direction>
+setState b12345678
+move up
+move left
+setState 12345678b
+move down
+move right
 solve A-star <heuristic>
 solve beam <k>
-maxNodes <n>
+maxNodes 4
