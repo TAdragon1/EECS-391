@@ -48,9 +48,6 @@ f = open("test.txt",'r',encoding = 'utf-8')
 commands = []
 for line in f:
  commands.append(re.split('\n', line)[0])
- print(line, end = '')
-
-print(commands)
 
 for cmd in commands:
  cmd_list = cmd.split()
@@ -68,4 +65,3 @@ for cmd in commands:
 
 
 print(state)
-print(state[0])
