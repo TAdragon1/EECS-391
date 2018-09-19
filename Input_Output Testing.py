@@ -34,8 +34,35 @@ def findB():
 def move(dir):
  "This moves the blank tile either 'up', 'down', 'left', or 'right'"
  global state
- b = findB()  #b is the location of the blank tile indexed from 0 to 8 along the state string
-
+ b = findB()  # b is the location of the blank tile indexed from 0 to 8 along the state string
+ if dir == "up":
+  if b > 2:  # b can be moved up
+   temp = state[b - 3]
+   state[b - 3] = state[b]
+   state[b] = temp
+  else:  # b cannot be moved up
+   print("Cannot move up")
+ elif dir == "down":
+  if b < 6:  # b can be moved down
+   temp = state[b + 3]
+   state[b + 3] = state[b]
+   state[b] = temp
+  else:  # b cannot be moved down
+   print("Cannot move down")
+ elif dir == "left":
+  if b != 0 or b != 3 or b != 6:  # b can be moved to the left
+   temp = state[b - 1]
+   state[b - 1] = state[b]
+   state[b] = temp
+  else:  # b cannot be moved to the left
+   print("Cannot move left")
+ elif dir == "right":
+  if b != 2 or b != 5 or b != 8:  # b can be moved to the right
+   temp = state[b + 1]
+   state[b + 1] = state[b]
+   state[b] = temp
+  else:  # b cannot be moved to the right
+   print("Cannot move left")
  return
 
 def maxNodes(n):
