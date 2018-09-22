@@ -1,5 +1,7 @@
 import re
 import random
+from queue import PriorityQueue
+
 # variables
 goal_state = list("b12345678")  # goal state
 state = ""  # set to empty
@@ -75,6 +77,10 @@ def move(dir):
    print("Cannot move right")
  return
 
+def solve_A_star(h):
+
+ return
+
 def maxNodes(n):
  "This sets the number of maximum nodes during a search"
  global max_nodes
@@ -103,3 +109,13 @@ for cmd in commands:
 
 
 print(state)
+
+q = PriorityQueue()
+
+q.put((2, 'code'))
+q.put((1, 'eat'))
+q.put((3, 'sleep'))
+
+while not q.empty():
+ next_item = q.get()
+ print(next_item)
