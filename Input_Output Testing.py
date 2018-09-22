@@ -4,7 +4,7 @@ from queue import PriorityQueue
 
 # variables
 goal_state = list("b12345678")  # goal state
-state = ""  # set to empty
+state = list("")  # set to empty
 max_nodes = 0
 
 # methods
@@ -16,8 +16,25 @@ def setState(str):
 
 def randomizeState(n):
  "This randomizes the state a certain number n of moves away from the goal state"
+ if n == 0:  #  base case
+  return
  global state
- for i in range(1, int(n)):
+ nextMove = random.randint(1, 4)
+ if nextMove == 1:
+  m = move("up")
+ elif nextMove == 2:
+  m = move("down")
+ elif nextMove == 3:
+  m = move("left")
+ else:  # nextMove == 4
+  m = move("right")
+ if m == -1:
+  randomizeState(n)  # not a valid move, don't count it
+  print("Move not counted")
+ else:
+  randomizeState(int(n)-1)
+ '''
+  for i in range(1, int(n)):
   nextMove = random.randint(1, 4)
   if nextMove == 1:
    move("up")
@@ -26,8 +43,8 @@ def randomizeState(n):
   elif nextMove == 3:
    move("left")
   else:  # nextMove == 4
-   move("right")
- return
+   move("right") 
+ return'''
 
 def printState():
  "This prints the state"
@@ -54,6 +71,7 @@ def move(dir):
    state[b] = temp
   else:  # b cannot be moved up
    print("Cannot move up")
+   return -1
  elif dir == "down":
   if b < 6:  # b can be moved down
    temp = state[b + 3]
@@ -61,6 +79,7 @@ def move(dir):
    state[b] = temp
   else:  # b cannot be moved down
    print("Cannot move down")
+   return -1
  elif dir == "left":
   if b != 0 and b != 3 and b != 6:  # b can be moved to the left
    temp = state[b - 1]
@@ -68,6 +87,7 @@ def move(dir):
    state[b] = temp
   else:  # b cannot be moved to the left
    print("Cannot move left")
+   return -1
  elif dir == "right":
   if b != 2 and b != 5 and b != 8:  # b can be moved to the right
    temp = state[b + 1]
@@ -75,6 +95,7 @@ def move(dir):
    state[b] = temp
   else:  # b cannot be moved to the right
    print("Cannot move right")
+   return -1
  return
 
 def solve_A_star(h):
