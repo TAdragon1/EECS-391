@@ -113,12 +113,38 @@ def h2(s):  # s is the state, h2 returns the sum of distances of misplaced tiles
    index -= 3
   if index == 2:  # b is in top row, right column
    count += 2  # b is 2 spaces away from goal
-   return count
   if index == 1:  # b is in top row, middle column
    count += 1  # b is one space away from goal
-   return count
-  else:  # b is has to be 0
-   return count
+  else:  # b is has to be in the right place
+
+ if find("1") != 1:
+  index = find("1")
+  if index > 5:  # 1 is in bottom row
+   count += 1
+   index -= 3
+  if index > 2:  # 1 is in middle row
+   count += 1
+   index -= 3
+  if index == 2:  # 1 is in top row, right column
+   count += 1  # 1 is 1 space away from goal
+  if index == 0:  # 1 is in top row, left column
+   count += 1  # 1 is 1 space away from goal
+  else:  # 1 is in the right place
+
+ if find("2") != 2:
+  index = find("2")
+  if index > 5:  # 2 is in bottom row
+   count += 1
+   index -= 3
+  if index > 2:  # 2 is in middle row
+   count += 1
+   index -= 3
+  if index == 0:  # 2 is in top row, left column
+   count += 2  # 2 is 2 space away from goal
+  if index == 1:  # 2 is in top row, middle column
+   count += 1  # 2 is one space away from goal
+  else:  # 2 is in the right place
+
 
 
  return
