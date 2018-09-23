@@ -19,7 +19,6 @@ def randomizeState(n):
  if n == 0:  #  base case
   return
 
- global state
  nextMove = random.randint(1, 4)
  if nextMove == 1:
   m = move("up")
@@ -29,10 +28,11 @@ def randomizeState(n):
   m = move("left")
  else:  # nextMove == 4
   m = move("right")
- if m == -1:
+ if m == "-1":
   randomizeState(n)  # not a valid move, don't count it
   # print("Move not counted")
  else:
+  state = m  # valid move so change the state
   randomizeState(int(n)-1)
 
 
@@ -44,44 +44,48 @@ def printState():
 
 def move(dir):
  "This moves the blank tile either 'up', 'down', 'left', or 'right'"
- global state
- b = state.index("b")  # b is the location of the blank tile indexed from 0 to 8 along the state string
+ nextState = state
+ b = nextState.index("b")  # b is the location of the blank tile indexed from 0 to 8 along the state string
  if dir == "up":
   if b > 2:  # b can be moved up
-   temp = state[b - 3]
-   state[b - 3] = state[b]
-   state[b] = temp
+   temp = nextState[b - 3]
+   nextState[b - 3] = nextState[b]
+   nextState[b] = temp
   else:  # b cannot be moved up
    # print("Cannot move up")
-   return -1
+   return "-1"
  elif dir == "down":
   if b < 6:  # b can be moved down
-   temp = state[b + 3]
-   state[b + 3] = state[b]
-   state[b] = temp
+   temp = nextState[b + 3]
+   nextState[b + 3] = nextState[b]
+   nextState[b] = temp
   else:  # b cannot be moved down
    # print("Cannot move down")
-   return -1
+   return "-1"
  elif dir == "left":
   if b != 0 and b != 3 and b != 6:  # b can be moved to the left
-   temp = state[b - 1]
-   state[b - 1] = state[b]
-   state[b] = temp
+   temp = nextState[b - 1]
+   nextState[b - 1] = nextState[b]
+   nextState[b] = temp
   else:  # b cannot be moved to the left
    # print("Cannot move left")
-   return -1
+   return "-1"
  elif dir == "right":
   if b != 2 and b != 5 and b != 8:  # b can be moved to the right
-   temp = state[b + 1]
-   state[b + 1] = state[b]
-   state[b] = temp
+   temp = nextState[b + 1]
+   nextState[b + 1] = nextState[b]
+   nextState[b] = temp
   else:  # b cannot be moved to the right
    # print("Cannot move right")
-   return -1
- return
+   return "-1"
+ return nextState
 
 def solve_A_star(h):
  g = 0
+ num_moves = 0
+ solution = []
+
+
 
  return
 
@@ -109,7 +113,11 @@ def h2(s):  # s is the state, h2 returns the sum of distances of misplaced tiles
  return count
 
 def solve_beam(k):
+ successors = PriorityQueue()
 
+ next1 = move("up")
+ print(next1)
+ successors.put((1, next1))
 
 
  return
@@ -138,7 +146,8 @@ for cmd in commands:
  elif cmd_list[0] == "printState":
   printState()
  elif cmd_list[0] == "move":
-  move(cmd_list[1])
+  if move(cmd_list[1]) != "-1":  # if it is a valid move
+   state = move(cmd_list[1])
  elif cmd_list[0] == "solve":
   if cmd_list[1] == "A-star":
    solve_A_star(cmd_list[2])
@@ -151,9 +160,11 @@ print('goal state = ' + "".join(goal_state))
 print('current state = ' + "".join(state))
 print(h1(state))
 print(h2(state))
+print(eval(state))
 
 
 q = PriorityQueue()
+
 
 q.put((2, 'code'))
 q.put((1, 'eat'))
