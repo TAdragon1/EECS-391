@@ -31,7 +31,7 @@ def randomizeState(n):
   m = move("right")
  if m == -1:
   randomizeState(n)  # not a valid move, don't count it
-  print("Move not counted")
+  # print("Move not counted")
  else:
   randomizeState(int(n)-1)
 
@@ -41,26 +41,18 @@ def printState():
  print("".join(state))
  return
 
-def find(t):
- "This returns the index of B in the state string"
- i = 0
- for tile in state:
-  if tile == t:
-   return i
-  i += 1
-
 
 def move(dir):
  "This moves the blank tile either 'up', 'down', 'left', or 'right'"
  global state
- b = find("b")  # b is the location of the blank tile indexed from 0 to 8 along the state string
+ b = state.index("b")  # b is the location of the blank tile indexed from 0 to 8 along the state string
  if dir == "up":
   if b > 2:  # b can be moved up
    temp = state[b - 3]
    state[b - 3] = state[b]
    state[b] = temp
   else:  # b cannot be moved up
-   print("Cannot move up")
+   # print("Cannot move up")
    return -1
  elif dir == "down":
   if b < 6:  # b can be moved down
@@ -68,7 +60,7 @@ def move(dir):
    state[b + 3] = state[b]
    state[b] = temp
   else:  # b cannot be moved down
-   print("Cannot move down")
+   # print("Cannot move down")
    return -1
  elif dir == "left":
   if b != 0 and b != 3 and b != 6:  # b can be moved to the left
@@ -76,7 +68,7 @@ def move(dir):
    state[b - 1] = state[b]
    state[b] = temp
   else:  # b cannot be moved to the left
-   print("Cannot move left")
+   # print("Cannot move left")
    return -1
  elif dir == "right":
   if b != 2 and b != 5 and b != 8:  # b can be moved to the right
@@ -84,7 +76,7 @@ def move(dir):
    state[b + 1] = state[b]
    state[b] = temp
   else:  # b cannot be moved to the right
-   print("Cannot move right")
+   # print("Cannot move right")
    return -1
  return
 
@@ -95,89 +87,35 @@ def solve_A_star(h):
 
 def h1(s):  # s is the state h1 returns the number of misplaced tiles
  count = 0
- for i in range(0, 9):
-  if s[i] != goal_state[i]:
-   count += 1
+ for i in s:
+  if i != "b":
+   if int(i) != s.index(i):
+    count += 1
  return count
 
+# check value of the string compared to the index, int("5") == 5
 def h2(s):  # s is the state, h2 returns the sum of distances of misplaced tiles
  count = 0
+ for i in s:
+  if i != "b":
+   value = int(i)
+   index = s.index(i)
+   if (value < 3 and index < 3) or (value > 5 and index > 5) or (value > 2 and value < 6 and index > 2 and index < 6):
+    count += abs(((value % 3) - (index % 3)))  # same row but a certain num of columns away
+   elif (value < 3 and index > 5) or (value > 5 and index < 3):  # 2 + columns away
+    count += 2 + abs(((value % 3) - (index % 3)))
+   else:  # 1 + columns away
+    count += 1 + abs(((value % 3) - (index % 3)))
+ return count
 
- if find("b") != 0:
-  index = find("b")
-  if index > 5:  # b is in bottom row
-   count += 1
-   index -= 3
-  if index > 2:  # b is in middle row
-   count += 1
-   index -= 3
-  if index == 2:  # b is in top row, right column
-   count += 2  # b is 2 spaces away from goal
-  if index == 1:  # b is in top row, middle column
-   count += 1  # b is one space away from goal
-  else:  # b is has to be in the right place
+def solve_beam(k):
 
- if find("1") != 1:
-  index = find("1")
-  if index > 5:  # 1 is in bottom row
-   count += 1
-   index -= 3
-  if index > 2:  # 1 is in middle row
-   count += 1
-   index -= 3
-  if index == 2:  # 1 is in top row, right column
-   count += 1  # 1 is 1 space away from goal
-  if index == 0:  # 1 is in top row, left column
-   count += 1  # 1 is 1 space away from goal
-  # else:  # 1 is in the right place
 
- if find("2") != 2:
-  index = find("2")
-  if index > 5:  # 2 is in bottom row
-   count += 1
-   index -= 3
-  if index > 2:  # 2 is in middle row
-   count += 1
-   index -= 3
-  if index == 0:  # 2 is in top row, left column
-   count += 2  # 2 is 2 space away from goal
-  if index == 1:  # 2 is in top row, middle column
-   count += 1  # 2 is one space away from goal
-  # else:  # 2 is in the right place
-
- if find("3") != 3:
-  index = find("3")
-  if index < 2:  # 3 is in the top row
-   count += 1
-   index += 3
-  if index > 5:  # 3 is in the bottom row
-   count += 1
-   index -= 3
-  if index == 4:  # 3 is in the middle row, middle column
-   count += 1  # 3 is one move away
-  if index == 5:  # 3 is in the middle row, right column
-   count += 2  # 3 is two moves away
-  # else 3 is in the right place
-
- if find("4") != 4:
-  index = find("4")
-  if index < 2:  # 4 is in the top row
-   count += 1
-   index += 3
-  if index > 5:  # 4 is in the bottom row
-   count += 1
-   index -= 3
-  if index == 3:  # 4 is in the middle row, left column
-   count += 1
-  if index == 5:  # 4 is in the middle row, right column
-   count += 1
-  # else 4 is in the right place
-
- if find("5") != 5:
-  index = find("5")
-  if index < 2:
 
  return
+
+def eval(s):  # my evaluation funciton for beamsort, h2 is always >= to h1 so this result is always positive
+ return h2(s) - h1(s)
 
 def maxNodes(n):
  "This sets the number of maximum nodes during a search"
@@ -186,14 +124,13 @@ def maxNodes(n):
  return
 
 # program
-f = open("test.txt",'r',encoding = 'utf-8')
+f = open("test.txt", 'r', encoding = 'utf-8')
 commands = []
 for line in f:
  commands.append(re.split('\n', line)[0])
 
 for cmd in commands:
  cmd_list = cmd.split()
- print(cmd_list)
  if cmd_list[0] == 'setState':
   setState(list(cmd_list[1]))
  elif cmd_list[0] == "randomizeState":
@@ -202,14 +139,19 @@ for cmd in commands:
   printState()
  elif cmd_list[0] == "move":
   move(cmd_list[1])
+ elif cmd_list[0] == "solve":
+  if cmd_list[1] == "A-star":
+   solve_A_star(cmd_list[2])
+  else:  # beam search
+   solve_beam(cmd_list[2])
  elif cmd_list[0] == "maxNodes":
   maxNodes(cmd_list[1])
 
-
-print(state)
-print(goal_state)
+print('goal state = ' + "".join(goal_state))
+print('current state = ' + "".join(state))
 print(h1(state))
 print(h2(state))
+
 
 q = PriorityQueue()
 
