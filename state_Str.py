@@ -7,6 +7,7 @@ import sys
 goal_state = list("b12345678")  # goal state
 state = list("")  # set to empty
 random.seed(773294944703101998)
+random.seed(84656848781523584739846976413525826)
 max_nodes = None
 
 def main():
@@ -44,6 +45,7 @@ def main():
             randomizeState(n)  # not a valid move, don't count it
             # print("Move not counted")
         else:
+            state = m
             randomizeState(n-1)
 
 
@@ -52,11 +54,16 @@ def main():
         print("".join(state))
         return
 
+    def copy(str_list):
+        r = []
+        for i in str_list:
+            r.append(i)
+        return r
 
     def move(dir, input):
         "This moves the blank tile either 'up', 'down', 'left', or 'right'"
-        s = input
-        test_state = "".join(s)
+        s = copy(input)
+        test_state = "".join(input)
         b = s.index("b")  # b is the location of the blank tile indexed from 0 to 8 along the state string
         if dir == "up":
             if b > 2:  # b can be moved up
@@ -90,11 +97,11 @@ def main():
             else:  # b cannot be moved to the right
                 # print("Cannot move right")
                 return -1
-        print()
-        print(input)
-        print(s)
-        print()
         if "".join(s) != test_state:  # extra catch
+            '''print()
+            print(input)
+            print(s)
+            print()'''
             return s
         else:
             return -1
@@ -117,69 +124,101 @@ def main():
 
         queue = PriorityQueue()
         queue.put((heval(h, state), state))
-        print(queue.get())
         prev_states["".join(state)] = None
         prev_moves["".join(state)] = None
         total_moves["".join(state)] = 0
-        curr = list("".join(state))
-        print(total_moves)
+
+        # print(total_moves)
         done = False
         while not done:
 
         # a node's value in the p_queue is num_moves + heuristic
 
-
+            item = queue.get()
+            curr = item[1]
             for l in range(0, 4):
                 if l == 0:
                     next_state = move("up", curr)
                     if next_state != -1:
-                        value = heval(h, next_state) + total_moves["".join(curr)]
-                        queue.put((value, next_state))
-                        # heval calls the right heuristic, add g for the num of moves
+                        if prev_states.get("".join(next_state)) is None:
+                            value = heval(h, next_state) + total_moves["".join(curr)] + 1
+                            queue.put((value, next_state))
+                            prev_states["".join(next_state)] = "".join(curr)
+                            prev_moves["".join(next_state)] = "up"
+                            total_moves["".join(next_state)] = total_moves["".join(curr)] + 1
+                        elif total_moves["".join(next_state)] > total_moves["".join(curr)] + 1:
+                            # total_moves of prev plus one is base
+                            # if the moves at the already existing next_state are less that the base
+                            # don't replace the existing values
+                            # if the moves at the already existing next_state are larger than the base
+                            # replace them
+                            value = heval(h, next_state) + total_moves["".join(curr)] + 1
+                            queue.put((value, next_state))
+                            prev_states["".join(next_state)] = "".join(curr)
+                            prev_moves["".join(next_state)] = "up"
+                            total_moves["".join(next_state)] = total_moves["".join(curr)] + 1
 
                 elif l == 1:
                     next_state = move("down", curr)
                     if next_state != -1:
-                        print(curr)
-                        value = heval(h, next_state) + total_moves["".join(curr)]
-                        queue.put((value, next_state))
+                        if prev_states.get("".join(next_state)) is None or total_moves["".join(next_state)] > total_moves["".join(curr)] + 1:
+                            value = heval(h, next_state) + total_moves["".join(curr)] + 1
+                            queue.put((value, next_state))
+                            prev_states["".join(next_state)] = "".join(curr)
+                            prev_moves["".join(next_state)] = "down"
+                            total_moves["".join(next_state)] = total_moves["".join(curr)] + 1
 
                 elif l == 2:
                     next_state = move("left", curr)
                     if next_state != -1:
-                        value = heval(h, next_state) + total_moves["".join(curr)]
-                        queue.put((value, next_state))
+                        if prev_states.get("".join(next_state)) is None or total_moves["".join(next_state)] > \
+                                total_moves["".join(curr)] + 1:
+                            value = heval(h, next_state) + total_moves["".join(curr)] + 1
+                            queue.put((value, next_state))
+                            prev_states["".join(next_state)] = "".join(curr)
+                            prev_moves["".join(next_state)] = "left"
+                            total_moves["".join(next_state)] = total_moves["".join(curr)] + 1
 
                 else:
                     next_state = move("right", curr)
                     if next_state != -1:
-                        value = heval(h, next_state) + total_moves["".join(curr)]
-                        queue.put((value, next_state))
-
-            curr = list(queue.get()[1])
-
-
-            if curr == "".join(goal_state):
+                        if prev_states.get("".join(next_state)) is None or total_moves["".join(next_state)] > \
+                                total_moves["".join(curr)] + 1:
+                            value = heval(h, next_state) + total_moves["".join(curr)] + 1
+                            queue.put((value, next_state))
+                            prev_states["".join(next_state)] = "".join(curr)
+                            prev_moves["".join(next_state)] = "right"
+                            total_moves["".join(next_state)] = total_moves["".join(curr)] + 1
+            '''
+            print(total_moves)
+            print(prev_states)
+            print(prev_moves)
+            '''
+            c = queue.get()
+            print(c)
+            if c[1] == goal_state:
+                str = "".join(c[1])
                 done = True
                 print("Total number of moves: ")
-                print(total_moves[curr])
+                print(total_moves[str])
                 moveList = []
                 prev_states["".join(state)] = None
                 prev_moves["".join(state)] = None
                 total_moves["".join(state)] = 0
-                while prev_states[curr] is not None:
-                    moveList.append(prev_moves[curr])
-                    curr = prev_states[curr]
+                while prev_states[str] is not None:
+                    moveList.append(prev_moves[str])
+                    str = prev_states[str]
                 moveList.reverse()
                 out = ", ".join(moveList)
                 print("Moves taken to reach the solution: ")
                 print(out)
+            else:
+                queue.put((c[0], c[1]))
 
-
-
+            if max_nodes <= queue.qsize():
+                done = True
 
         return
-
 
     def h1(s):  # s is the state h1 returns the number of misplaced tiles
         count = 0
@@ -209,7 +248,6 @@ def main():
             return h1(s)
         else:
             return h2(s)
-
 
     def solve_beam(k):
         global state
@@ -326,7 +364,7 @@ def main():
     def maxNodes(n):
         "This sets the number of maximum nodes during a search"
         global max_nodes
-        max_nodes = n
+        max_nodes = int(n)
         return
 
     # program
@@ -353,7 +391,6 @@ def main():
                 solve_beam(cmd_list[2])
         elif cmd_list[0] == "maxNodes":
             maxNodes(cmd_list[1])
-
 
 if __name__ == "__main__":
     main()
