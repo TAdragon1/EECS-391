@@ -3,17 +3,21 @@ import random
 from queue import PriorityQueue
 import sys
 
+# variables
+goal_state = list("b12345678")  # goal state
+state = list("")  # set to empty
+random.seed(773294944703101998)
+max_nodes = None
+
 def main():
     # comment this out to use ide's run command
     '''
     file_name = sys.argv[1]
     '''
 
-    # variables
-    goal_state = list("b12345678")  # goal state
-    state = list("")  # set to empty
-    random.seed(773294944703101998)
-    max_nodes = None
+    global state
+    global goal_state
+    global max_nodes
 
     # methods
     def setState(str):
@@ -49,8 +53,9 @@ def main():
         return
 
 
-    def move(dir, s):
+    def move(dir, input):
         "This moves the blank tile either 'up', 'down', 'left', or 'right'"
+        s = input
         test_state = "".join(s)
         b = s.index("b")  # b is the location of the blank tile indexed from 0 to 8 along the state string
         if dir == "up":
@@ -85,40 +90,96 @@ def main():
             else:  # b cannot be moved to the right
                 # print("Cannot move right")
                 return -1
-
+        print()
+        print(input)
+        print(s)
+        print()
         if "".join(s) != test_state:  # extra catch
             return s
         else:
             return -1
 
     def solve_A_star(h):
-        g = 0
+
+        print('goal state = ' + "".join(goal_state))
+        print('current state = ' + "".join(state))
+        prev_states = {
+            "".join(state): None
+        }
+        # formatted as state: prev move
+        prev_moves = {
+            "".join(state): None
+        }
+
+        total_moves = {
+            "".join(state): 0
+        }
+
         queue = PriorityQueue()
-        curr = state
+        queue.put((heval(h, state), state))
+        print(queue.get())
+        prev_states["".join(state)] = None
+        prev_moves["".join(state)] = None
+        total_moves["".join(state)] = 0
+        curr = list("".join(state))
+        print(total_moves)
         done = False
-        printState()
         while not done:
+
+        # a node's value in the p_queue is num_moves + heuristic
 
 
             for l in range(0, 4):
                 if l == 0:
                     next_state = move("up", curr)
                     if next_state != -1:
-                        queue.put((h(next_state), next_state))
+                        value = heval(h, next_state) + total_moves["".join(curr)]
+                        queue.put((value, next_state))
+                        # heval calls the right heuristic, add g for the num of moves
 
                 elif l == 1:
                     next_state = move("down", curr)
+                    if next_state != -1:
+                        print(curr)
+                        value = heval(h, next_state) + total_moves["".join(curr)]
+                        queue.put((value, next_state))
 
                 elif l == 2:
                     next_state = move("left", curr)
+                    if next_state != -1:
+                        value = heval(h, next_state) + total_moves["".join(curr)]
+                        queue.put((value, next_state))
 
                 else:
                     next_state = move("right", curr)
+                    if next_state != -1:
+                        value = heval(h, next_state) + total_moves["".join(curr)]
+                        queue.put((value, next_state))
+
+            curr = list(queue.get()[1])
+
+
+            if curr == "".join(goal_state):
+                done = True
+                print("Total number of moves: ")
+                print(total_moves[curr])
+                moveList = []
+                prev_states["".join(state)] = None
+                prev_moves["".join(state)] = None
+                total_moves["".join(state)] = 0
+                while prev_states[curr] is not None:
+                    moveList.append(prev_moves[curr])
+                    curr = prev_states[curr]
+                moveList.reverse()
+                out = ", ".join(moveList)
+                print("Moves taken to reach the solution: ")
+                print(out)
 
 
 
 
         return
+
 
     def h1(s):  # s is the state h1 returns the number of misplaced tiles
         count = 0
@@ -142,6 +203,13 @@ def main():
                 else:  # 1 + columns away
                     count += 1 + abs(((value % 3) - (index % 3)))
         return count
+
+    def heval(h, s):
+        if h == "h1":
+            return h1(s)
+        else:
+            return h2(s)
+
 
     def solve_beam(k):
         global state

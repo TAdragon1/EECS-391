@@ -1,6 +1,5 @@
 setState b12345678
-randomizeState 2
-solve beam 2
-setState b12345678
-randomizeState 1
+printState
+randomizeState 4
+maxNodes 5
 solve A-star h1
