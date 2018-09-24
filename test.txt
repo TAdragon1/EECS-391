@@ -7,6 +7,6 @@ move left
 setState 12345678b
 move down
 move right
-solve A-star <heuristic>
-solve beam <k>
+solve A-star h1
+solve beam 6
 maxNodes 4
