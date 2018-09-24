@@ -146,7 +146,7 @@ def main():
                             prev_states["".join(next_state)] = "".join(curr)
                             prev_moves["".join(next_state)] = "up"
                             total_moves["".join(next_state)] = total_moves["".join(curr)] + 1
-                        elif total_moves["".join(next_state)] > total_moves["".join(curr)] + 1:
+                        elif total_moves["".join(next_state)] > total_moves["".join(curr)]:
                             # total_moves of prev plus one is base
                             # if the moves at the already existing next_state are less that the base
                             # don't replace the existing values
@@ -161,7 +161,7 @@ def main():
                 elif l == 1:
                     next_state = move("down", curr)
                     if next_state != -1:
-                        if prev_states.get("".join(next_state)) is None or total_moves["".join(next_state)] > total_moves["".join(curr)] + 1:
+                        if prev_states.get("".join(next_state)) is None or total_moves["".join(next_state)] > total_moves["".join(curr)]:
                             value = heval(h, next_state) + total_moves["".join(curr)] + 1
                             queue.put((value, next_state))
                             prev_states["".join(next_state)] = "".join(curr)
@@ -172,7 +172,7 @@ def main():
                     next_state = move("left", curr)
                     if next_state != -1:
                         if prev_states.get("".join(next_state)) is None or total_moves["".join(next_state)] > \
-                                total_moves["".join(curr)] + 1:
+                                total_moves["".join(curr)]:
                             value = heval(h, next_state) + total_moves["".join(curr)] + 1
                             queue.put((value, next_state))
                             prev_states["".join(next_state)] = "".join(curr)
@@ -183,17 +183,17 @@ def main():
                     next_state = move("right", curr)
                     if next_state != -1:
                         if prev_states.get("".join(next_state)) is None or total_moves["".join(next_state)] > \
-                                total_moves["".join(curr)] + 1:
+                                total_moves["".join(curr)]:
                             value = heval(h, next_state) + total_moves["".join(curr)] + 1
                             queue.put((value, next_state))
                             prev_states["".join(next_state)] = "".join(curr)
                             prev_moves["".join(next_state)] = "right"
                             total_moves["".join(next_state)] = total_moves["".join(curr)] + 1
-            '''
+
             print(total_moves)
             print(prev_states)
             print(prev_moves)
-            '''
+            
             c = queue.get()
             print(c)
             if c[1] == goal_state:
