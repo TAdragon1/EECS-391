@@ -1,19 +1,27 @@
-maxNodes 100
+maxNodes 10000
 setState b12345678
 printState
 randomizeState 1
 solve A-star h1
 randomizeState 2
 solve A-star h1
-randomizeState 3
-solve A-star h1
 randomizeState 4
-solve A-star h1
-randomizeState 5
-solve A-star h1
-randomizeState 6
-solve A-star h1
-randomizeState 7
 solve A-star h1
 randomizeState 8
 solve A-star h1
+randomizeState 16
+solve A-star h1
+randomizeState 32
+solve A-star h1
+randomizeState 1
+solve A-star h2
+randomizeState 2
+solve A-star h2
+randomizeState 4
+solve A-star h2
+randomizeState 8
+solve A-star h2
+randomizeState 16
+solve A-star h2
+randomizeState 256
+solve A-star h2
