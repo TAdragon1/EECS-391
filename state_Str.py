@@ -93,14 +93,18 @@ def main():
 
     def solve_A_star(h):
         g = 0
+        queue = PriorityQueue()
         curr = state
         done = False
+        printState()
         while not done:
 
 
             for l in range(0, 4):
                 if l == 0:
                     next_state = move("up", curr)
+                    if next_state != -1:
+                        queue.put((h(next_state), next_state))
 
                 elif l == 1:
                     next_state = move("down", curr)
