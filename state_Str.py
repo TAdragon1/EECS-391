@@ -6,8 +6,7 @@ import sys
 # variables
 goal_state = list("b12345678")  # goal state
 state = list("")  # set to empty
-random.seed(773294944703101998)
-random.seed(84656848781523584739846976413525826)
+random.seed(8)
 max_nodes = None
 
 def main():
@@ -42,11 +41,11 @@ def main():
         else:  # nextMove == 4
             m = move("right", state)
         if m == -1:
-            randomizeState(n)  # not a valid move, don't count it
+            return randomizeState(n)  # not a valid move, don't count it
             # print("Move not counted")
         else:
             state = m
-            randomizeState(n-1)
+            return randomizeState(n-1)
 
 
     def printState():
@@ -189,13 +188,13 @@ def main():
                             prev_states["".join(next_state)] = "".join(curr)
                             prev_moves["".join(next_state)] = "right"
                             total_moves["".join(next_state)] = total_moves["".join(curr)] + 1
-
+            '''
             print(total_moves)
             print(prev_states)
             print(prev_moves)
-            
+            '''
             c = queue.get()
-            print(c)
+            # print(c)
             if c[1] == goal_state:
                 str = "".join(c[1])
                 done = True

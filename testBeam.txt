@@ -1,28 +1,29 @@
 setState b12345678
 printState
 randomizeState 1
-solve beam 30
+solve beam 4
 setState b12345678
 randomizeState 2
-solve beam 30
+solve beam 4
 setState b12345678
 randomizeState 4
-solve beam 30
+solve beam 4
 setState b12345678
 randomizeState 8
-solve beam 30
+solve beam 4
 setState b12345678
 randomizeState 16
-solve beam 30
+solve beam 4
 setState b12345678
 randomizeState 32
-solve beam 30
+solve beam 4
 setState b12345678
 randomizeState 64
-solve beam 30
+solve beam 4
 setState b12345678
 randomizeState 128
-solve beam 30
+solve beam 4
 setState b12345678
 randomizeState 256
-solve beam 30
+solve beam 4
+setState b12345678
