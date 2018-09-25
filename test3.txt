@@ -1,10 +1,10 @@
 maxNodes 40000
 setState b12345678
-randomizeState 50
+randomizeState 675
+solve beam 2
+setState b12345678
+randomizeState 692
 solve A-star h2
 setState b12345678
-randomizeState 50
+randomizeState 658
 solve A-star h1
-setState b12345678
-randomizeState 50
-solve beam 4

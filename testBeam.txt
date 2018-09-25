@@ -37,4 +37,4 @@ randomizeState 24
 solve beam 4
 setState b12345678
 randomizeState 50
-solve beam 7
+solve beam 4

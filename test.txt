@@ -2,8 +2,9 @@ maxNodes 4000
 setState b12345678
 randomizeState 240
 solve A-star h1
+maxNodes 50000
 setState b12345678
-randomizeState 220
+randomizeState 240
 solve A-star h1
 setState b12345678
 randomizeState 200
