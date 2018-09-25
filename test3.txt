@@ -1,0 +1,10 @@
+maxNodes 40000
+setState b12345678
+randomizeState 50
+solve A-star h2
+setState b12345678
+randomizeState 50
+solve A-star h1
+setState b12345678
+randomizeState 50
+solve beam 4

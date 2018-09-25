@@ -2,6 +2,8 @@ import re
 import random
 from queue import PriorityQueue
 import sys
+import time
+
 
 # variables
 goal_state = list("b12345678")  # goal state
@@ -11,9 +13,9 @@ max_nodes = None
 
 
 # comment this out to use ide's run command
-'''
+
 file_name = sys.argv[1]
-'''
+
 
 
 # methods
@@ -103,8 +105,10 @@ def move(dir, input):
         return -1
 
 def solve_A_star(h):
+    '''
     print('goal state = ' + "".join(goal_state))
     print('current state = ' + "".join(state))
+    '''
     prev_states = {
         "".join(state): None
     }
@@ -125,6 +129,7 @@ def solve_A_star(h):
 
     # print(total_moves)
     done = False
+    start_time = time.perf_counter()
     while not done:
 
         # a node's value in the p_queue is num_moves + heuristic
@@ -191,6 +196,7 @@ def solve_A_star(h):
         '''
         c = queue.get()
         # print(c)
+        end_time = time.perf_counter()
         if c[1] == goal_state:
             str = "".join(c[1])
             done = True
@@ -207,10 +213,15 @@ def solve_A_star(h):
             out = ", ".join(moveList)
             print("Moves taken to reach the solution: ")
             print(out)
+            print("Number of nodes: ")
+            print(queue.qsize()+1)
+            print((end_time - start_time), "seconds")
         else:
             queue.put((c[0], c[1]))
 
         if max_nodes <= queue.qsize():
+            print("Reached max nodes")
+            print((end_time - start_time), "seconds")
             done = True
     return
 
@@ -245,8 +256,10 @@ def heval(h, s):
 
 def solve_beam(k):
     global state
+    '''
     print('goal state = ' + "".join(goal_state))
     print('current state = ' + "".join(state))
+    '''
     # dictionary formatted as state: prev state
     prev_states = {
         "".join(state): None
@@ -264,6 +277,7 @@ def solve_beam(k):
     k_best[0] = "".join(state)
     successors = PriorityQueue()
     done = False
+    start_time = time.perf_counter()
     while not done:
 
         for i in k_best:
@@ -333,6 +347,7 @@ def solve_beam(k):
                 temp = successors.get()
                 k_best[m] = "".join(temp[1])
 
+        end_time = time.perf_counter()
         if "".join(goal_state) in k_best:
             done = True
             print("Total moves to reach the solution: ")
@@ -349,6 +364,7 @@ def solve_beam(k):
             out = ", ".join(moveList)
             print("Moves taken to reach the solution: ")
             print(out)
+            print((end_time - start_time), "seconds")
 
     return
 
@@ -362,7 +378,7 @@ def maxNodes(n):
     return
 
 # program
-file_name = "test.txt"  # comment this line out to use command line input
+# file_name = "testCorrect.txt"  # comment this line out to use command line input
 f = open(file_name, 'r', encoding = 'utf-8')
 commands = []
 for line in f:
@@ -377,7 +393,7 @@ for cmd in commands:
     elif cmd_list[0] == "printState":
         printState()
     elif cmd_list[0] == "move":
-        move(cmd_list[1], state)
+        state = move(cmd_list[1], state)
     elif cmd_list[0] == "solve":
         if cmd_list[1] == "A-star":
             solve_A_star(cmd_list[2])

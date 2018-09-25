@@ -1,0 +1,32 @@
+setState b12345678
+printState
+move down
+printState
+setState 12345678b
+printState
+move up
+printState
+setState b12345678
+printState
+move right
+printState
+setState 12345678b
+printState
+move left
+printState
+setState b12345678
+printState
+randomizeState 1
+printState
+maxNodes 50000
+solve A-star h1
+setState b12345678
+printState
+randomizeState 2
+printState
+solve A-star h2
+setState b12345678
+printState
+randomizeState 3
+printState
+solve beam 4

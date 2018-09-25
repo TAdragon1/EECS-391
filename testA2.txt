@@ -1,7 +1,4 @@
-maxNodes 100000
-setState b12345678
-randomizeState 1
-solve A-star h2
+maxNodes 40000
 setState b12345678
 randomizeState 2
 solve A-star h2
@@ -9,20 +6,35 @@ setState b12345678
 randomizeState 4
 solve A-star h2
 setState b12345678
+randomizeState 6
+solve A-star h2
+setState b12345678
 randomizeState 8
+solve A-star h2
+setState b12345678
+randomizeState 10
+solve A-star h2
+setState b12345678
+randomizeState 12
+solve A-star h2
+setState b12345678
+randomizeState 14
 solve A-star h2
 setState b12345678
 randomizeState 16
 solve A-star h2
 setState b12345678
-randomizeState 32
+randomizeState 18
 solve A-star h2
 setState b12345678
-randomizeState 64
+randomizeState 20
 solve A-star h2
 setState b12345678
-randomizeState 128
+randomizeState 22
 solve A-star h2
 setState b12345678
-randomizeState 256
+randomizeState 24
+solve A-star h2
+setState b12345678
+randomizeState 50
 solve A-star h2
